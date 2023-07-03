@@ -63,7 +63,37 @@ class _HarvestHomeState extends State<HarvestHome> {
                 if (index == context.watch<HarvestProvider>().gangList.length) {
                   return _addGang();
                 } else {
-                  return Text('ada data');
+                  return Column(
+                    children: [
+                      ListTile(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              CustomPageTransition.slideToPage(
+                                  page: HarvestAddgang(
+                                    fieldNo: widget.fieldno,
+                                    model: context
+                                        .read<HarvestProvider>()
+                                        .gangList[index],
+                                    gangNo: context
+                                        .read<HarvestProvider>()
+                                        .gangList[index]
+                                        .gangNo,
+                                    id: widget.id!,
+                                    isEdit: true,
+                                  ),
+                                  slide: SlideFrom.bottom));
+                        },
+                        title: Text(
+                            'Gang No: ${context.watch<HarvestProvider>().gangList[index].gangNo}'),
+                      ),
+                      const Divider(
+                        height: 0,
+                        indent: 16,
+                        endIndent: 16,
+                      )
+                    ],
+                  );
                 }
               }),
       bottomNavigationBar: Container(
@@ -72,16 +102,18 @@ class _HarvestHomeState extends State<HarvestHome> {
           color: Colors.white,
           border: Border(top: BorderSide(color: Colors.black87)),
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Total Workers',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             Text(
-              '0',
-              style: TextStyle(
+              context.watch<HarvestProvider>().gangList.isEmpty
+                  ? '0'
+                  : _countTotal(context),
+              style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: AssetsColor.darkGreen),
@@ -90,6 +122,22 @@ class _HarvestHomeState extends State<HarvestHome> {
         ),
       ),
     );
+  }
+
+  _countTotal(BuildContext context) {
+    int result = 0;
+    for (var model in context.watch<HarvestProvider>().gangList) {
+      int cutter = _convertToNum(model.noCutter!);
+      int harv = _convertToNum(model.noHarvester!);
+      result = result + cutter + harv;
+    }
+    return result.toString();
+  }
+
+  _convertToNum(String num) {
+    return num.trim().replaceAll(' ', '').isEmpty
+        ? 0
+        : int.parse(num.trim().replaceAll(' ', ''));
   }
 
   _addGang() {
@@ -141,8 +189,11 @@ class _HarvestHomeState extends State<HarvestHome> {
                                       context,
                                       CustomPageTransition.slideToPage(
                                           page: HarvestAddgang(
-                                              fieldNo: widget.fieldno,
-                                              gangNo: dialogCtrl.text),
+                                            fieldNo: widget.fieldno,
+                                            gangNo: dialogCtrl.text,
+                                            id: widget.id!,
+                                            isEdit: false,
+                                          ),
                                           slide: SlideFrom.bottom));
                                   dialogCtrl.clear();
                                 },

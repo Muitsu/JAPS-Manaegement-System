@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:japs/data/repository/gang_model.dart';
+import 'package:japs/data/repository/local_db_repo.dart';
+import 'package:japs/pages/harvesting/harvest_provider.dart';
 import 'package:japs/pages/harvesting/harvest_title.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/color_constants.dart';
 import '../../constants/harvesting_constants.dart';
@@ -9,8 +13,17 @@ import '../../widgets/section_container.dart';
 
 class HarvestAddgang extends StatefulWidget {
   final String? gangNo;
+  final int id;
+  final bool isEdit;
+  final GangModel? model;
   final String? fieldNo;
-  const HarvestAddgang({super.key, this.gangNo, this.fieldNo});
+  const HarvestAddgang(
+      {super.key,
+      this.gangNo,
+      this.fieldNo,
+      this.model,
+      required this.id,
+      required this.isEdit});
 
   @override
   State<HarvestAddgang> createState() => _HarvestAddgangState();
@@ -34,8 +47,9 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
   final typeEvit = HarvestingTypeEvit.values;
   var currEvit = HarvestingTypeEvit.values[0];
   final formDate = 'Date: ${DateFormat('yyyy-MM-dd').format(DateTime.now())}';
-//(Tonnage dispatch + balance today - balance previous day) ÷ cutter/ harvester
+
   _calcProd() {
+    //(Tonnage dispatch + balance today - balance previous day) ÷ cutter/ harvester
     _cutterProd();
     _harvestProd();
   }
@@ -47,7 +61,7 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
     var noCutter = _convertToNum(noCutterCtrl.text);
     var noHarvest = _convertToNum(noHvstrCtrl.text);
     double calc = (tonDisp + balToday - balPrev) / (noCutter / noHarvest);
-    debugPrint('prod cut $calc');
+
     setState(() => cutProdtCtrl.text = calc.toString());
   }
 
@@ -58,7 +72,7 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
     var noCutter = _convertToNum(noCutterCtrl.text);
     var noHarvest = _convertToNum(noHvstrCtrl.text);
     double calc = (tonDisp + balToday - balPrev) / (noCutter / noHarvest);
-    debugPrint('prod harv $calc');
+
     setState(() => harvProdtCtrl.text = calc.toString());
   }
 
@@ -75,6 +89,52 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
       }
     }
     return result;
+  }
+
+  _saveData() {
+    LocalDBRepo()
+        .insertGang(
+            model: GangModel(
+                harvesterId: widget.id,
+                gangNo: widget.gangNo,
+                noHarvester: noHvstrCtrl.text,
+                noCutter: noCutterCtrl.text,
+                evitMethod: evitMethodCtrl.text,
+                targetMt: targetMtCtrl.text,
+                balanceMtToday: balMtTodayCtrl.text,
+                balanceMtPrev: balMtPrevCtrl.text,
+                totalBin: totBinCtrl.text,
+                cutTotHect: cutTotHectCtrl.text,
+                cutTotDispt: cutTotDisptCtrl.text,
+                harvTotHect: harvTotHectCtrl.text,
+                harvTotDispt: harvTotDisptCtrl.text))
+        .then((value) {
+      harvestProvider.fetchGangList(id: widget.id);
+      Navigator.pop(context);
+      CustomSnackbar.showSuccess(context, message: 'Successful Save');
+    });
+  }
+
+  late HarvestProvider harvestProvider;
+  @override
+  void initState() {
+    super.initState();
+    harvestProvider = Provider.of<HarvestProvider>(context, listen: false);
+    if (widget.isEdit) {
+      GangModel model = widget.model!;
+      noHvstrCtrl.text = model.noHarvester!;
+      noCutterCtrl.text = model.noCutter!;
+      evitMethodCtrl.text = model.evitMethod!;
+      targetMtCtrl.text = model.targetMt!;
+      balMtTodayCtrl.text = model.balanceMtToday!;
+      balMtPrevCtrl.text = model.balanceMtPrev!;
+      totBinCtrl.text = model.totalBin!;
+      cutTotHectCtrl.text = model.cutTotHect!;
+      cutTotDisptCtrl.text = model.cutTotDispt!;
+      harvTotHectCtrl.text = model.harvTotHect!;
+      harvTotDisptCtrl.text = model.harvTotDispt!;
+      _calcProd();
+    }
   }
 
   @override
@@ -113,8 +173,33 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
           ),
           actions: [
             IconButton(
-                onPressed: () => CustomSnackbar.showSuccess(context,
-                    message: 'Successful Save'),
+                onPressed: () {
+                  if (widget.isEdit) {
+                    LocalDBRepo()
+                        .updateGang(
+                            model: widget.model!.copyWith(
+                                harvesterId: widget.id,
+                                gangNo: widget.gangNo,
+                                noHarvester: noHvstrCtrl.text,
+                                noCutter: noCutterCtrl.text,
+                                evitMethod: evitMethodCtrl.text,
+                                targetMt: targetMtCtrl.text,
+                                balanceMtToday: balMtTodayCtrl.text,
+                                balanceMtPrev: balMtPrevCtrl.text,
+                                totalBin: totBinCtrl.text,
+                                cutTotHect: cutTotHectCtrl.text,
+                                cutTotDispt: cutTotDisptCtrl.text,
+                                harvTotHect: harvTotHectCtrl.text,
+                                harvTotDispt: harvTotDisptCtrl.text))
+                        .then((value) {
+                      harvestProvider.fetchGangList(id: widget.id);
+                      CustomSnackbar.showSuccessUpdate(context,
+                          message: 'Successful Update');
+                    });
+                  } else {
+                    _saveData();
+                  }
+                },
                 icon: const Icon(Icons.save))
           ],
           bottom: TabBar(

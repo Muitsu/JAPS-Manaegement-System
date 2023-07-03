@@ -39,6 +39,17 @@ class _HomePageState extends State<HomePage> {
             ? _noDataView(context)
             : ListView(
                 children: [
+                  Visibility(
+                    visible: context.watch<HomeProvier>().upkeepList.isNotEmpty,
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 14, top: 22, bottom: 10),
+                      child: Text(
+                        'Upkeep',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
                   ...List.generate(
                     context.watch<HomeProvier>().upkeepList.length,
                     (index) => Column(
@@ -75,6 +86,18 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+                  Visibility(
+                    visible:
+                        context.watch<HomeProvier>().harvesterList.isNotEmpty,
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 14, top: 30, bottom: 10),
+                      child: Text(
+                        'Harvesting',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
                   ...List.generate(
                     context.watch<HomeProvier>().harvesterList.length,
                     (index) => Column(
@@ -97,7 +120,8 @@ class _HomePageState extends State<HomePage> {
                                     slide: SlideFrom.right));
                           },
                           leading: Text(
-                            '${context.read<HomeProvier>().upkeepList.length + index + 1}',
+                            // '${context.read<HomeProvier>().upkeepList.length + index + 1}',
+                            '${index + 1}',
                             style: const TextStyle(fontSize: 20),
                           ),
                           title: Text(

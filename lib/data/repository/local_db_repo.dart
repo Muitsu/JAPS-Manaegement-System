@@ -72,6 +72,11 @@ class LocalDBRepo {
     }
   }
 
+  Future<int> insertGang({required GangModel model}) async {
+    final db = await instance.database;
+    return await db.insert(GangFields.tableName, model.toJson());
+  }
+
   Future<List<GangModel>> fetchGangList({required int id}) async {
     final db = await instance.database;
     final data = await db.rawQuery(
@@ -83,5 +88,11 @@ class LocalDBRepo {
       // throw Exception('ID not found');
       return [];
     }
+  }
+
+  Future<void> updateGang({required GangModel model}) async {
+    final db = await instance.database;
+    await db.update(GangFields.tableName, model.toJson(),
+        where: '${GangFields.id} = ?', whereArgs: [model.harvesterId]);
   }
 }
