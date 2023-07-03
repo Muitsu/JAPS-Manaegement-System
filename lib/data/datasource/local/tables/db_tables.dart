@@ -20,7 +20,7 @@ enum DBTables {
       column: [
         ColumnField(
             colName: UpkeepFields.id, fieldType: FieldType.idTypeNumber),
-        ColumnField(colName: UpkeepFields.date, fieldType: FieldType.date),
+        ColumnField(colName: UpkeepFields.date, fieldType: FieldType.text),
         ColumnField(colName: UpkeepFields.fieldNo, fieldType: FieldType.text),
         //
         ColumnField(
@@ -95,13 +95,40 @@ enum DBTables {
     table: CreateTable(
       tableName: HarvesterFields.tableName,
       column: [
-        ColumnField(colName: HarvesterFields.date, fieldType: FieldType.date),
+        ColumnField(
+            colName: HarvesterFields.id, fieldType: FieldType.idTypeNumber),
+        ColumnField(
+            colName: HarvesterFields.fieldNo, fieldType: FieldType.text),
+        ColumnField(colName: HarvesterFields.date, fieldType: FieldType.text),
         ColumnField(
             colName: HarvesterFields.createdDate,
             fieldType: FieldType.dateTime),
         ColumnField(
             colName: HarvesterFields.updatedDate,
             fieldType: FieldType.dateTime),
+      ],
+    ),
+  ),
+  gangTable(
+    table: CreateTable(
+      tableName: GangFields.tableName,
+      column: [
+        ColumnField(colName: GangFields.id, fieldType: FieldType.integer),
+        ColumnField(colName: GangFields.gangNo, fieldType: FieldType.text),
+        ColumnField(colName: GangFields.noHarvester, fieldType: FieldType.text),
+        ColumnField(colName: GangFields.noCutter, fieldType: FieldType.text),
+        ColumnField(colName: GangFields.evitMethod, fieldType: FieldType.text),
+        ColumnField(colName: GangFields.targetMt, fieldType: FieldType.text),
+        ColumnField(
+            colName: GangFields.balanceMtToday, fieldType: FieldType.text),
+        ColumnField(
+            colName: GangFields.balanceMtPrev, fieldType: FieldType.text),
+        ColumnField(colName: GangFields.totalBin, fieldType: FieldType.text),
+        ColumnField(colName: GangFields.cutTotHect, fieldType: FieldType.text),
+        ColumnField(colName: GangFields.cutTotDispt, fieldType: FieldType.text),
+        ColumnField(colName: GangFields.harvTotHect, fieldType: FieldType.text),
+        ColumnField(
+            colName: GangFields.harvTotDispt, fieldType: FieldType.text),
       ],
     ),
   ),

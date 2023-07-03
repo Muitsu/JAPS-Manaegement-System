@@ -137,7 +137,7 @@ class _UpkeepHomeState extends State<UpkeepHome> {
       pndChemi: pndChemiCtrl.text,
       pndHectCoverTarget: pndHectCoverTargetCtrl.text,
       pndHectCoverAct: pndHectCoverActCtrl.text,
-      date: DateTime.now().toString(),
+      date: DateFormat('dd-MM-yyyy').format(DateTime.now()),
       createdDate: DateTime.now().toString(),
       updatedDate: DateTime.now().toString(),
     ))

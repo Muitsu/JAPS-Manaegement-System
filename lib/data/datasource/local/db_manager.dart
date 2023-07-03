@@ -22,6 +22,7 @@ class DBManager {
   Future _createDB(Database db, int version) async {
     await db.execute(createTable(db: DBTables.upkeepTable));
     await db.execute(createTable(db: DBTables.harvesterTable));
+    await db.execute(createTable(db: DBTables.gangTable));
   }
 
   createTable({required DBTables db}) {

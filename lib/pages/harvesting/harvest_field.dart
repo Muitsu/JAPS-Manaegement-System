@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:japs/data/repository/harvester_model.dart';
+import 'package:japs/data/repository/local_db_repo.dart';
 import 'package:japs/pages/harvesting/harvest_home.dart';
+import 'package:provider/provider.dart';
+
+import '../home/home_provider.dart';
 
 class HarvestField extends StatefulWidget {
   const HarvestField({super.key});
@@ -10,6 +16,15 @@ class HarvestField extends StatefulWidget {
 
 class _HarvestFieldState extends State<HarvestField> {
   TextEditingController ctrl = TextEditingController();
+  DateTime currDate = DateTime.now();
+  late HomeProvier homeProvier;
+
+  @override
+  void initState() {
+    super.initState();
+    homeProvier = Provider.of(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,12 +65,24 @@ class _HarvestFieldState extends State<HarvestField> {
                 ),
                 FloatingActionButton.extended(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HarvestHome(
-                                  fieldno: ctrl.text,
-                                )));
+                    LocalDBRepo()
+                        .insertHarvester(
+                            model: HarvesterModel(
+                      fieldNo: ctrl.text,
+                      date: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+                      createdDate: currDate.toString(),
+                      updatedDate: currDate.toString(),
+                    ))
+                        .then((value) {
+                      homeProvier.fetchHarvesterList();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HarvestHome(
+                                    id: value,
+                                    fieldno: ctrl.text,
+                                  )));
+                    });
                   },
                   elevation: 0.6,
                   label: const Icon(Icons.arrow_forward),

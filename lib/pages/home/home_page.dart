@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:japs/constants/home_constant.dart';
+import 'package:japs/pages/harvesting/harvest_home.dart';
 import 'package:japs/pages/home/home_provider.dart';
 import 'package:japs/pages/upkeep/upkeep_home.dart';
 import 'package:japs/widgets/custom_transition.dart';
@@ -34,7 +34,8 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(color: AssetsColor.darkGreen),
           ),
         ),
-        body: context.watch<HomeProvier>().upkeepList.isEmpty
+        body: context.watch<HomeProvier>().upkeepList.isEmpty &&
+                context.watch<HomeProvier>().harvesterList.isEmpty
             ? _noDataView(context)
             : ListView(
                 children: [
@@ -61,11 +62,50 @@ class _HomePageState extends State<HomePage> {
                           ),
                           title: Text(
                               'Upkeep Field: ${context.watch<HomeProvier>().upkeepList[index].fieldNo!}'),
-                          subtitle: Text(DateFormat('dd-MM-yyyy').format(
-                              DateTime.parse(context
-                                  .watch<HomeProvier>()
-                                  .upkeepList[index]
-                                  .date!))),
+                          subtitle: Text(context
+                              .watch<HomeProvier>()
+                              .upkeepList[index]
+                              .date!),
+                        ),
+                        const Divider(
+                          height: 0,
+                          indent: 40,
+                          endIndent: 20,
+                        )
+                      ],
+                    ),
+                  ),
+                  ...List.generate(
+                    context.watch<HomeProvier>().harvesterList.length,
+                    (index) => Column(
+                      children: [
+                        ListTile(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                CustomPageTransition.slideToPage(
+                                    page: HarvestHome(
+                                      id: context
+                                          .read<HomeProvier>()
+                                          .harvesterList[index]
+                                          .id,
+                                      fieldno: context
+                                          .read<HomeProvier>()
+                                          .harvesterList[index]
+                                          .fieldNo,
+                                    ),
+                                    slide: SlideFrom.right));
+                          },
+                          leading: Text(
+                            '${context.read<HomeProvier>().upkeepList.length + index + 1}',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          title: Text(
+                              'Harvester Field: ${context.watch<HomeProvier>().harvesterList[index].fieldNo!}'),
+                          subtitle: Text(context
+                              .watch<HomeProvier>()
+                              .harvesterList[index]
+                              .date!),
                         ),
                         const Divider(
                           height: 0,

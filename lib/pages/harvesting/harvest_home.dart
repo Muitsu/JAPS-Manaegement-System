@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:japs/pages/harvesting/harvest_add_gang.dart';
+import 'package:japs/pages/harvesting/harvest_provider.dart';
 import 'package:japs/widgets/custom_transition.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/color_constants.dart';
 
 class HarvestHome extends StatefulWidget {
   final String? fieldno;
-  const HarvestHome({super.key, this.fieldno});
+  final int? id;
+  const HarvestHome({super.key, this.fieldno, this.id});
 
   @override
   State<HarvestHome> createState() => _HarvestHomeState();
@@ -14,6 +17,14 @@ class HarvestHome extends StatefulWidget {
 
 class _HarvestHomeState extends State<HarvestHome> {
   TextEditingController dialogCtrl = TextEditingController();
+  late HarvestProvider harvestProvider;
+  @override
+  void initState() {
+    super.initState();
+    harvestProvider = Provider.of<HarvestProvider>(context, listen: false);
+    harvestProvider.fetchGangList(id: widget.id!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +42,7 @@ class _HarvestHomeState extends State<HarvestHome> {
               ),
               child: IntrinsicWidth(
                 child: TextFormField(
+                  readOnly: true,
                   textAlign: TextAlign.center,
                   decoration: const InputDecoration(hintText: 'Field No.'),
                   initialValue: widget.fieldno,
@@ -41,11 +53,19 @@ class _HarvestHomeState extends State<HarvestHome> {
           ],
         ),
       ),
-      body: ListView.builder(
-          itemCount: 1,
-          itemBuilder: (context, index) {
-            return _addGang();
-          }),
+      body: context.watch<HarvestProvider>().gangList.isEmpty
+          ? Column(
+              children: [_addGang()],
+            )
+          : ListView.builder(
+              itemCount: context.watch<HarvestProvider>().gangList.length + 1,
+              itemBuilder: (context, index) {
+                if (index == context.watch<HarvestProvider>().gangList.length) {
+                  return _addGang();
+                } else {
+                  return Text('ada data');
+                }
+              }),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 24),
         decoration: const BoxDecoration(

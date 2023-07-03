@@ -32,9 +32,13 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   _fetchData() async {
-    bool hasData = await LocalDBRepo().upkeepHasData();
-    if (hasData) {
+    bool uHasData = await LocalDBRepo().upkeepHasData();
+    bool hHasData = await LocalDBRepo().harvesterHasData();
+    if (uHasData) {
       homeProvier.fetchUpkeepList();
+    }
+    if (hHasData) {
+      homeProvier.fetchHarvesterList();
     }
   }
 

@@ -50,8 +50,17 @@ class UpkeepFields {
 
 class HarvesterFields {
   static const String tableName = 'harvester_table';
-  static const String fieldNo = 'gang_no';
+  static const String id = 'id';
+  static const String fieldNo = 'field_no';
+  static const String date = 'date';
+  static const String createdDate = 'created_date';
+  static const String updatedDate = 'updated_date';
+}
+
+class GangFields {
+  static const String tableName = 'gang_table';
   static const String id = 'harvester_id';
+  static const String gangNo = 'gang_no';
   static const String noHarvester = 'no_harvester';
   static const String noCutter = 'no_cutter';
   static const String evitMethod = 'evit_method';
@@ -59,7 +68,8 @@ class HarvesterFields {
   static const String balanceMtToday = 'balance_mt_today';
   static const String balanceMtPrev = 'balance_mt_prev';
   static const String totalBin = 'total_bin';
-  static const String date = 'date';
-  static const String createdDate = 'created_date';
-  static const String updatedDate = 'updated_date';
+  static const String cutTotHect = 'cutTotHect';
+  static const String cutTotDispt = 'cutTotDispt';
+  static const String harvTotHect = 'harvTotHect';
+  static const String harvTotDispt = 'harvTotDispt';
 }
