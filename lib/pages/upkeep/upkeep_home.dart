@@ -30,7 +30,7 @@ class _UpkeepHomeState extends State<UpkeepHome> {
   final wType = WType.values;
   final pType = PType.values;
   final pMethod = PMethod.values;
-  final formDate = 'Date: ${DateFormat('yyyy-MM-dd').format(DateTime.now())}';
+  var formDate = 'Date: ${DateFormat('dd-MM-yyyy').format(DateTime.now())}';
   final fieldNoCtrl = TextEditingController();
   //
   final manuFertTypeCtrl = TextEditingController();
@@ -198,6 +198,7 @@ class _UpkeepHomeState extends State<UpkeepHome> {
     pndHectCoverTargetCtrl.text = model.pndHectCoverTarget!;
     pndHectCoverActCtrl.text = model.pndHectCoverAct!;
     //
+    formDate = 'Date: ${model.date!}';
   }
 
   @override

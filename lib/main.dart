@@ -25,6 +25,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AssetsColor.primaryColor),
+        inputDecorationTheme:
+            InputDecorationTheme(hintStyle: TextStyle(color: Colors.grey[500])),
         useMaterial3: true,
       ),
       home: const SplashPage(),

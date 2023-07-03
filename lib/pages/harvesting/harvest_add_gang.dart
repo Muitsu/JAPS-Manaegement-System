@@ -46,7 +46,7 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
   final harvestTab = HarvestingTab.values;
   final typeEvit = HarvestingTypeEvit.values;
   var currEvit = HarvestingTypeEvit.values[0];
-  final formDate = 'Date: ${DateFormat('yyyy-MM-dd').format(DateTime.now())}';
+  var formDate = 'Date: ${DateFormat('yyyy-MM-dd').format(DateTime.now())}';
 
   _calcProd() {
     //(Tonnage dispatch + balance today - balance previous day) ÷ cutter/ harvester
