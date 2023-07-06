@@ -59,8 +59,7 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
     var balToday = _convertToNum(balMtTodayCtrl.text);
     var balPrev = _convertToNum(balMtPrevCtrl.text);
     var noCutter = _convertToNum(noCutterCtrl.text);
-    var noHarvest = _convertToNum(noHvstrCtrl.text);
-    double calc = (tonDisp + balToday - balPrev) / (noCutter / noHarvest);
+    double calc = (tonDisp + balToday - balPrev) / (noCutter);
 
     setState(() => cutProdtCtrl.text = calc.toString());
   }
@@ -69,9 +68,8 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
     var tonDisp = _convertToNum(harvTotDisptCtrl.text);
     var balToday = _convertToNum(balMtTodayCtrl.text);
     var balPrev = _convertToNum(balMtPrevCtrl.text);
-    var noCutter = _convertToNum(noCutterCtrl.text);
     var noHarvest = _convertToNum(noHvstrCtrl.text);
-    double calc = (tonDisp + balToday - balPrev) / (noCutter / noHarvest);
+    double calc = (tonDisp + balToday - balPrev) / (noHarvest);
 
     setState(() => harvProdtCtrl.text = calc.toString());
   }
