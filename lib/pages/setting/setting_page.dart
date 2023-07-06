@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:japs/pages/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -38,7 +40,7 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                   child: Center(
                       child: Text(
-                    shortenName(username),
+                    shortenName(context.watch<UserProvider>().name),
                     style: TextStyle(
                         fontSize: 20, color: Theme.of(context).primaryColor),
                   )),
@@ -49,7 +51,7 @@ class _SettingPageState extends State<SettingPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        username,
+                        context.watch<UserProvider>().name.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

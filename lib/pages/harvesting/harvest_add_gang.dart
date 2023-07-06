@@ -179,12 +179,32 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
                 visible: widget.isEdit,
                 child: IconButton(
                     onPressed: () {
-                      LocalDBRepo()
-                          .deleteGang(model: widget.model!)
-                          .then((value) {
-                        harvestProvider.fetchGangList(id: widget.id);
-                        Navigator.pop(context);
-                      });
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text('Delete Master Chit?'),
+                                content:
+                                    const Text('Do you want to delete data?'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Cancel')),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        LocalDBRepo()
+                                            .deleteGang(model: widget.model!)
+                                            .then((value) {
+                                          harvestProvider.fetchGangList(
+                                              id: widget.id);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: const Text('Delete')),
+                                ],
+                              ));
                     },
                     icon: const Icon(Icons.delete))),
             IconButton(

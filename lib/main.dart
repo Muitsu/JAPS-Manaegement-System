@@ -3,6 +3,7 @@ import 'package:japs/constants/color_constants.dart';
 import 'package:japs/pages/harvesting/harvest_provider.dart';
 import 'package:japs/pages/home/home_provider.dart';
 import 'package:japs/pages/splash/splash_page.dart';
+import 'package:japs/pages/user_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -12,6 +13,9 @@ void main() {
     ),
     ChangeNotifierProvider(
       create: ((context) => HarvestProvider()),
+    ),
+    ChangeNotifierProvider(
+      create: ((context) => UserProvider()),
     ),
   ], child: const MyApp()));
 }

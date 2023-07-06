@@ -65,11 +65,31 @@ class _HarvestHomeState extends State<HarvestHome> {
         actions: [
           IconButton(
               onPressed: () {
-                LocalDBRepo().deleteHarvester(id: widget.id!).then((value) {
-                  homeProvier.fetchUpkeepList();
-                  homeProvier.fetchHarvesterList();
-                  Navigator.pop(context);
-                });
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: const Text('Delete Master Chit?'),
+                          content: const Text('Do you want to delete data?'),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel')),
+                            ElevatedButton(
+                                onPressed: () {
+                                  LocalDBRepo()
+                                      .deleteHarvester(id: widget.id!)
+                                      .then((value) {
+                                    homeProvier.fetchUpkeepList();
+                                    homeProvier.fetchHarvesterList();
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  });
+                                },
+                                child: const Text('Delete')),
+                          ],
+                        ));
               },
               icon: const Icon(Icons.delete)),
           IconButton(

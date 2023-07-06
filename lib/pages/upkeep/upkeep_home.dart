@@ -234,12 +234,32 @@ class _UpkeepHomeState extends State<UpkeepHome> {
                 visible: widget.isEdit,
                 child: IconButton(
                     onPressed: () {
-                      LocalDBRepo()
-                          .deleteUpkeep(id: widget.upkeepModel!.id!)
-                          .then((value) {
-                        homeProvier.fetchUpkeepList();
-                        Navigator.pop(context);
-                      });
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text('Delete Master Chit?'),
+                                content:
+                                    const Text('Do you want to delete data?'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Cancel')),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        LocalDBRepo()
+                                            .deleteUpkeep(
+                                                id: widget.upkeepModel!.id!)
+                                            .then((value) {
+                                          homeProvier.fetchUpkeepList();
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: const Text('Delete')),
+                                ],
+                              ));
                     },
                     icon: const Icon(Icons.delete))),
             IconButton(
