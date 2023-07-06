@@ -153,7 +153,10 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
           title: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Gang No. '),
+              const Text(
+                'Gang No. ',
+                style: TextStyle(fontSize: 16),
+              ),
               const Text('( '),
               ConstrainedBox(
                 constraints: BoxConstraints(
@@ -172,13 +175,24 @@ class _HarvestAddgangState extends State<HarvestAddgang> {
             ],
           ),
           actions: [
+            Visibility(
+                visible: widget.isEdit,
+                child: IconButton(
+                    onPressed: () {
+                      LocalDBRepo()
+                          .deleteGang(model: widget.model!)
+                          .then((value) {
+                        harvestProvider.fetchGangList(id: widget.id);
+                        Navigator.pop(context);
+                      });
+                    },
+                    icon: const Icon(Icons.delete))),
             IconButton(
                 onPressed: () {
                   if (widget.isEdit) {
                     LocalDBRepo()
                         .updateGang(
                             model: widget.model!.copyWith(
-                                harvesterId: widget.id,
                                 gangNo: widget.gangNo,
                                 noHarvester: noHvstrCtrl.text,
                                 noCutter: noCutterCtrl.text,

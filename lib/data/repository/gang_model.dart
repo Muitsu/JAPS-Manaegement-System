@@ -1,4 +1,5 @@
 class GangModel {
+  int? id;
   int? harvesterId;
   String? gangNo;
   String? noHarvester;
@@ -14,7 +15,8 @@ class GangModel {
   String? harvTotDispt;
 
   GangModel(
-      {this.harvesterId,
+      {this.id,
+      this.harvesterId,
       this.gangNo,
       this.noHarvester,
       this.noCutter,
@@ -29,6 +31,7 @@ class GangModel {
       this.harvTotDispt});
 
   GangModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     harvesterId = json['harvester_id'];
     gangNo = json['gang_no'];
     noHarvester = json['no_harvester'];
@@ -46,6 +49,7 @@ class GangModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['harvester_id'] = harvesterId;
     data['gang_no'] = gangNo;
     data['no_harvester'] = noHarvester;
@@ -63,6 +67,7 @@ class GangModel {
   }
 
   GangModel copyWith({
+    int? id,
     int? harvesterId,
     String? gangNo,
     String? noHarvester,
@@ -78,6 +83,7 @@ class GangModel {
     String? harvTotDispt,
   }) {
     return GangModel(
+      id: id ?? this.id,
       harvesterId: harvesterId ?? this.harvesterId,
       gangNo: gangNo ?? this.gangNo,
       noHarvester: noHarvester ?? this.noHarvester,

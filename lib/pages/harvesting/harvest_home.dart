@@ -5,6 +5,9 @@ import 'package:japs/widgets/custom_transition.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/color_constants.dart';
+import '../../data/repository/local_db_repo.dart';
+import '../../widgets/custom_snackbar.dart';
+import '../home/home_provider.dart';
 
 class HarvestHome extends StatefulWidget {
   final String? fieldno;
@@ -17,12 +20,16 @@ class HarvestHome extends StatefulWidget {
 
 class _HarvestHomeState extends State<HarvestHome> {
   TextEditingController dialogCtrl = TextEditingController();
+  TextEditingController fieldNoCtrl = TextEditingController();
   late HarvestProvider harvestProvider;
+  late HomeProvier homeProvier;
   @override
   void initState() {
     super.initState();
     harvestProvider = Provider.of<HarvestProvider>(context, listen: false);
+    homeProvier = Provider.of<HomeProvier>(context, listen: false);
     harvestProvider.fetchGangList(id: widget.id!);
+    fieldNoCtrl.text = widget.fieldno!;
   }
 
   @override
@@ -33,7 +40,10 @@ class _HarvestHomeState extends State<HarvestHome> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Harvesting '),
+            const Text(
+              'Harvesting ',
+              style: TextStyle(fontSize: 16),
+            ),
             const Text('( '),
             ConstrainedBox(
               constraints: BoxConstraints(
@@ -42,16 +52,38 @@ class _HarvestHomeState extends State<HarvestHome> {
               ),
               child: IntrinsicWidth(
                 child: TextFormField(
-                  readOnly: true,
+                  // readOnly: true,
                   textAlign: TextAlign.center,
+                  controller: fieldNoCtrl,
                   decoration: const InputDecoration(hintText: 'Field No.'),
-                  initialValue: widget.fieldno,
                 ),
               ),
             ),
             const Text(' )'),
           ],
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                LocalDBRepo().deleteHarvester(id: widget.id!).then((value) {
+                  homeProvier.fetchUpkeepList();
+                  homeProvier.fetchHarvesterList();
+                  Navigator.pop(context);
+                });
+              },
+              icon: const Icon(Icons.delete)),
+          IconButton(
+              onPressed: () {
+                LocalDBRepo()
+                    .updateHarvester(id: widget.id!, fieldNo: fieldNoCtrl.text)
+                    .then((value) {
+                  homeProvier.fetchHarvesterList();
+                  CustomSnackbar.showSuccessUpdate(context,
+                      message: 'Successful Update');
+                });
+              },
+              icon: const Icon(Icons.save))
+        ],
       ),
       body: context.watch<HarvestProvider>().gangList.isEmpty
           ? Column(

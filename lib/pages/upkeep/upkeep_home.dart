@@ -230,6 +230,18 @@ class _UpkeepHomeState extends State<UpkeepHome> {
             ],
           ),
           actions: [
+            Visibility(
+                visible: widget.isEdit,
+                child: IconButton(
+                    onPressed: () {
+                      LocalDBRepo()
+                          .deleteUpkeep(id: widget.upkeepModel!.id!)
+                          .then((value) {
+                        homeProvier.fetchUpkeepList();
+                        Navigator.pop(context);
+                      });
+                    },
+                    icon: const Icon(Icons.delete))),
             IconButton(
                 onPressed: () async {
                   if (widget.isEdit) {

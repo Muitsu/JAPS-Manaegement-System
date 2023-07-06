@@ -59,7 +59,8 @@ class HarvesterFields {
 
 class GangFields {
   static const String tableName = 'gang_table';
-  static const String id = 'harvester_id';
+  static const String id = 'id';
+  static const String harvId = 'harvester_id';
   static const String gangNo = 'gang_no';
   static const String noHarvester = 'no_harvester';
   static const String noCutter = 'no_cutter';

@@ -2,18 +2,6 @@ import 'package:japs/data/datasource/local/tables/db_fields.dart';
 import 'package:japs/data/datasource/local/db_utils.dart';
 
 enum DBTables {
-  // masterTable(
-  //   table: CreateTable(
-  //     tableName: MasterFields.tableName,
-  //     column: [
-  //       ColumnField(colName: MasterFields.date, fieldType: FieldType.date),
-  //       ColumnField(
-  //           colName: MasterFields.createdDate, fieldType: FieldType.dateTime),
-  //       ColumnField(
-  //           colName: MasterFields.updatedDate, fieldType: FieldType.dateTime),
-  //     ],
-  //   ),
-  // ),
   upkeepTable(
     table: CreateTable(
       tableName: UpkeepFields.tableName,
@@ -113,7 +101,8 @@ enum DBTables {
     table: CreateTable(
       tableName: GangFields.tableName,
       column: [
-        ColumnField(colName: GangFields.id, fieldType: FieldType.integer),
+        ColumnField(colName: GangFields.id, fieldType: FieldType.idTypeNumber),
+        ColumnField(colName: GangFields.harvId, fieldType: FieldType.integer),
         ColumnField(colName: GangFields.gangNo, fieldType: FieldType.text),
         ColumnField(colName: GangFields.noHarvester, fieldType: FieldType.text),
         ColumnField(colName: GangFields.noCutter, fieldType: FieldType.text),
