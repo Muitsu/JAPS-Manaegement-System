@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:japs/constants/assets_icon.dart';
 import 'package:japs/constants/color_constants.dart';
 import 'package:japs/pages/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -35,19 +36,19 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Center(
                     child: Container(
-                      height: size.width * 0.28,
-                      width: size.width * 0.28,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: AssetsColor.darkGreen),
-                      child: const Center(
-                          child: Text(
-                        'JAPS.',
-                        style: TextStyle(
-                            fontSize: 22,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      )),
-                    ),
+                        height: size.width * 0.28,
+                        width: size.width * 0.28,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AssetsColor.darkGreen),
+                            color: AssetsColor.darkGreen),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.asset(
+                            AssetsIcons.iconLauncher,
+                            fit: BoxFit.fill,
+                          ),
+                        )),
                   ),
                   const SizedBox(height: 10),
                   const Center(child: Text('Job Allocation Palm System')),
